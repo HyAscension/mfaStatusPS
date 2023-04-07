@@ -18,7 +18,7 @@ ForEach ($User in $Users) {
             "TwoWayVoiceMobile" { $MethodUsed = "Phone call" }
             "PhoneAppOTP" { $MethodUsed = "Authenticator app" }
             "PhoneAppNotification" { $MethodUsed = "Authenticator app" }
-            
+
             # Include additional authentication methods
             "TwoWayVoiceOffice" { $MethodUsed = "Phone call" }
             "PhoneApp" { $MethodUsed = "Authenticator app" }
@@ -26,10 +26,20 @@ ForEach ($User in $Users) {
             "Email" { $MethodUsed = "Email" }
             "Unknown" { $MethodUsed = "Unknown" }
         }
+
+        if ($MethodUsed -eq "MFA Not Used") {
+            $MethodUsed = "Uncertain" 
+        }
     }
-    Else {
+    elseif ($MFAEnforced -eq "") {
         $MFAEnforced = "Not Enabled"
         $MethodUsed = "MFA Not Used"
+        $MFAPhone = ""
+    }
+    else {
+        $MFAEnforced = "Not Enabled"
+        $MethodUsed = "MFA Not Used"
+        $MFAPhone = ""
     }
      
     $ReportLine = [PSCustomObject] @{
