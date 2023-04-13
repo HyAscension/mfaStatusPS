@@ -41,6 +41,16 @@ ForEach ($User in $Users) {
         $MethodUsed = "MFA Not Used"
         $MFAPhone = ""
     }
+
+    $activeStatus = $User.BlockCredential
+    $accStatsOutput = ""
+
+    if ($activeStatus -eq $false) {
+        $accStatsOutput = "Active"
+    }
+    elseif ($activeStatus -eq $true) {
+        $accStatsOutput = "Disabled"
+    }
      
     $ReportLine = [PSCustomObject] @{
         User        = $User.UserPrincipalName
@@ -50,9 +60,10 @@ ForEach ($User in $Users) {
         MFAUsed     = $MFAEnforced
         MFAMethod   = $MethodUsed
         PhoneNumber = $MFAPhone
+        ActiveAccounts  = $accStatsOutput
     }
      
-        $Report.Add($ReportLine)
+    $Report.Add($ReportLine)
 }
      
 Write-Host "Report is in (path)"
